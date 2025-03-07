@@ -10,12 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Check,
   Plus,
@@ -29,10 +24,22 @@ import {
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
+interface PackingItem {
+  id: number;
+  name: string;
+  category: string;
+  packed: boolean;
+}
+
 export default function PackingListPage() {
-  const [items, setItems] = useState([
+  const [items, setItems] = useState<PackingItem[]>([
     { id: 1, name: "Passport", category: "documents", packed: false },
-    { id: 2, name: "Travel Insurance Documents", category: "documents", packed: false },
+    {
+      id: 2,
+      name: "Travel Insurance Documents",
+      category: "documents",
+      packed: false,
+    },
     { id: 3, name: "Flight Tickets", category: "documents", packed: false },
     { id: 4, name: "Credit Cards", category: "documents", packed: false },
     { id: 5, name: "T-Shirts", category: "clothing", packed: false },
@@ -40,8 +47,18 @@ export default function PackingListPage() {
     { id: 7, name: "Underwear", category: "clothing", packed: false },
     { id: 8, name: "Socks", category: "clothing", packed: false },
     { id: 9, name: "Jacket/Sweater", category: "clothing", packed: false },
-    { id: 10, name: "Toothbrush & Toothpaste", category: "toiletries", packed: false },
-    { id: 11, name: "Shampoo & Conditioner", category: "toiletries", packed: false },
+    {
+      id: 10,
+      name: "Toothbrush & Toothpaste",
+      category: "toiletries",
+      packed: false,
+    },
+    {
+      id: 11,
+      name: "Shampoo & Conditioner",
+      category: "toiletries",
+      packed: false,
+    },
     { id: 12, name: "Sunscreen", category: "toiletries", packed: false },
     { id: 13, name: "Deodorant", category: "toiletries", packed: false },
     { id: 14, name: "Phone Charger", category: "electronics", packed: false },
@@ -62,13 +79,15 @@ export default function PackingListPage() {
     { id: "misc", name: "Miscellaneous" },
   ];
 
-  const filteredItems = selectedCategory === "all" 
-    ? items 
-    : items.filter(item => item.category === selectedCategory);
+  const filteredItems =
+    selectedCategory === "all"
+      ? items
+      : items.filter((item) => item.category === selectedCategory);
 
-  const packedItems = filteredItems.filter(item => item.packed).length;
+  const packedItems = filteredItems.filter((item) => item.packed).length;
   const totalItems = filteredItems.length;
-  const progressPercentage = totalItems > 0 ? (packedItems / totalItems) * 100 : 0;
+  const progressPercentage =
+    totalItems > 0 ? (packedItems / totalItems) * 100 : 0;
 
   const handleAddItem = () => {
     if (newItem.trim() !== "") {
@@ -86,16 +105,16 @@ export default function PackingListPage() {
     }
   };
 
-  const handleToggleItem = (id) => {
+  const handleToggleItem = (id: number) => {
     setItems(
-      items.map(item =>
+      items.map((item) =>
         item.id === id ? { ...item, packed: !item.packed } : item
       )
     );
   };
 
-  const handleDeleteItem = (id) => {
-    setItems(items.filter(item => item.id !== id));
+  const handleDeleteItem = (id: number) => {
+    setItems(items.filter((item) => item.id !== id));
   };
 
   return (
@@ -144,15 +163,19 @@ export default function PackingListPage() {
 
             <CardContent>
               {/* Category Tabs */}
-              <Tabs defaultValue="all" value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Tabs
+                defaultValue="all"
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <TabsList className="grid grid-cols-3 md:grid-cols-6 mb-6">
-                  {categories.map(category => (
+                  {categories.map((category) => (
                     <TabsTrigger key={category.id} value={category.id}>
                       {category.name}
                     </TabsTrigger>
                   ))}
                 </TabsList>
-                
+
                 {/* Add Item Form */}
                 <div className="flex mb-6">
                   <Input
@@ -163,20 +186,27 @@ export default function PackingListPage() {
                     className="flex-grow rounded-r-none"
                     onKeyDown={(e) => e.key === "Enter" && handleAddItem()}
                   />
-                  <Button
-                    className="rounded-l-none"
-                    onClick={handleAddItem}
-                  >
+                  <Button className="rounded-l-none" onClick={handleAddItem}>
                     <Plus className="h-4 w-4 mr-1" />
                     Add
                   </Button>
                 </div>
 
                 {/* Items List - one TabsContent for each category */}
-                {categories.map(category => (
-                  <TabsContent key={category.id} value={category.id} className="space-y-2 mt-0">
-                    {(category.id === "all" ? items : items.filter(item => item.category === category.id)).length > 0 ? (
-                      (category.id === "all" ? items : items.filter(item => item.category === category.id)).map(item => (
+                {categories.map((category) => (
+                  <TabsContent
+                    key={category.id}
+                    value={category.id}
+                    className="space-y-2 mt-0"
+                  >
+                    {(category.id === "all"
+                      ? items
+                      : items.filter((item) => item.category === category.id)
+                    ).length > 0 ? (
+                      (category.id === "all"
+                        ? items
+                        : items.filter((item) => item.category === category.id)
+                      ).map((item) => (
                         <div
                           key={item.id}
                           className={`flex items-center justify-between p-3 rounded-lg transition-colors ${
@@ -192,7 +222,9 @@ export default function PackingListPage() {
                               className="mr-3"
                             />
                             <span
-                              className={item.packed ? "line-through opacity-70" : ""}
+                              className={
+                                item.packed ? "line-through opacity-70" : ""
+                              }
                             >
                               {item.name}
                             </span>
@@ -211,7 +243,8 @@ export default function PackingListPage() {
                       ))
                     ) : (
                       <div className="text-center py-8 text-gray-500">
-                        No items in this category. Add some items to get started!
+                        No items in this category. Add some items to get
+                        started!
                       </div>
                     )}
                   </TabsContent>
@@ -282,4 +315,4 @@ export default function PackingListPage() {
       </div>
     </div>
   );
-} 
+}
