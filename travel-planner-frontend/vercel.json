@@ -1,10 +1,7 @@
 {
   "version": 2,
-  "root": "travel-planner-frontend",
-  "build": {
-    "command": "npm install --force && npm run build",
-    "outputDirectory": "dist"
-  },
+  "buildCommand": "npm install --force && npm run build",
+  "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
     {
