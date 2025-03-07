@@ -29,7 +29,36 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { Sparkles, Loader2 } from "lucide-react";
 
-export default function AiTripGenerator({ onApplyPlan }) {
+interface TripPlan {
+  destination: string;
+  tripName: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  days: {
+    id: string;
+    events: {
+      id: string;
+      time: string;
+      activity: string;
+      location: string;
+      notes: string;
+    }[];
+  }[];
+  accommodation: {
+    name: string;
+    address: string;
+    checkIn: string;
+    checkOut: string;
+    price: number;
+  };
+}
+
+interface AiTripGeneratorProps {
+  onApplyPlan: (plan: TripPlan) => void;
+}
+
+export default function AiTripGenerator({ onApplyPlan }: AiTripGeneratorProps) {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -37,11 +66,11 @@ export default function AiTripGenerator({ onApplyPlan }) {
   const [tripLength, setTripLength] = useState("3");
   const [preferences, setPreferences] = useState("");
   const [budget, setBudget] = useState("medium");
-  const [generatedPlan, setGeneratedPlan] = useState(null);
+  const [generatedPlan, setGeneratedPlan] = useState<TripPlan | null>(null);
 
   const generateSamplePlan = () => {
     setIsGenerating(true);
-    
+
     // Simulate API call delay
     setTimeout(() => {
       const plan = {
@@ -49,53 +78,80 @@ export default function AiTripGenerator({ onApplyPlan }) {
         tripName: `${destination} Adventure`,
         description: `Explore the wonders of ${destination} with this AI-generated itinerary tailored for a ${budget} budget.`,
         startDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-        endDate: new Date(Date.now() + (30 + parseInt(tripLength)) * 24 * 60 * 60 * 1000),
+        endDate: new Date(
+          Date.now() + (30 + parseInt(tripLength)) * 24 * 60 * 60 * 1000
+        ),
         days: Array.from({ length: parseInt(tripLength) }, (_, i) => ({
-          id: `day-${i+1}`,
+          id: `day-${i + 1}`,
           events: [
             {
-              id: `event-${i+1}-1`,
+              id: `event-${i + 1}-1`,
               time: "09:00",
-              activity: i === 0 
-                ? `Arrival and check-in to accommodation`
-                : i === parseInt(tripLength) - 1
+              activity:
+                i === 0
+                  ? `Arrival and check-in to accommodation`
+                  : i === parseInt(tripLength) - 1
                   ? `Checkout and departure`
-                  : `Visit ${["Museum", "Park", "Historical Site", "Beach", "Market"][i % 5]}`,
-              location: `${destination} ${["Central", "Downtown", "Old Town", "Waterfront", "District"][i % 5]}`,
-              notes: ""
+                  : `Visit ${
+                      ["Museum", "Park", "Historical Site", "Beach", "Market"][
+                        i % 5
+                      ]
+                    }`,
+              location: `${destination} ${
+                ["Central", "Downtown", "Old Town", "Waterfront", "District"][
+                  i % 5
+                ]
+              }`,
+              notes: "",
             },
             {
-              id: `event-${i+1}-2`,
+              id: `event-${i + 1}-2`,
               time: "13:00",
               activity: `Lunch at local restaurant`,
               location: `${destination} Food Quarter`,
-              notes: ""
+              notes: "",
             },
             {
-              id: `event-${i+1}-3`,
+              id: `event-${i + 1}-3`,
               time: "15:00",
-              activity: `${["Shopping", "Sightseeing", "Guided Tour", "Local Experience", "Relaxation"][i % 5]}`,
-              location: `${destination} ${["Square", "Avenue", "Boulevard", "Promenade", "Quarter"][i % 5]}`,
-              notes: ""
+              activity: `${
+                [
+                  "Shopping",
+                  "Sightseeing",
+                  "Guided Tour",
+                  "Local Experience",
+                  "Relaxation",
+                ][i % 5]
+              }`,
+              location: `${destination} ${
+                ["Square", "Avenue", "Boulevard", "Promenade", "Quarter"][i % 5]
+              }`,
+              notes: "",
             },
             {
-              id: `event-${i+1}-4`,
+              id: `event-${i + 1}-4`,
               time: "19:00",
               activity: `Dinner and evening entertainment`,
               location: `${destination} Entertainment District`,
-              notes: ""
-            }
-          ]
+              notes: "",
+            },
+          ],
         })),
         accommodation: {
-          name: `${destination} ${budget === "luxury" ? "Grand Hotel" : budget === "medium" ? "Comfort Inn" : "Budget Hostel"}`,
+          name: `${destination} ${
+            budget === "luxury"
+              ? "Grand Hotel"
+              : budget === "medium"
+              ? "Comfort Inn"
+              : "Budget Hostel"
+          }`,
           location: `Central ${destination}`,
           checkIn: "14:00",
           checkOut: "11:00",
-          confirmation: "AI123456"
-        }
+          confirmation: "AI123456",
+        },
       };
-      
+
       setGeneratedPlan(plan);
       setIsGenerating(false);
     }, 2000);
@@ -106,7 +162,8 @@ export default function AiTripGenerator({ onApplyPlan }) {
     setIsOpen(false);
     toast({
       title: "AI Plan Applied",
-      description: "Your AI-generated trip plan has been applied to the itinerary.",
+      description:
+        "Your AI-generated trip plan has been applied to the itinerary.",
     });
   };
 
@@ -122,10 +179,11 @@ export default function AiTripGenerator({ onApplyPlan }) {
         <DialogHeader>
           <DialogTitle>AI Trip Planner</DialogTitle>
           <DialogDescription>
-            Let AI generate a personalized trip itinerary based on your preferences.
+            Let AI generate a personalized trip itinerary based on your
+            preferences.
           </DialogDescription>
         </DialogHeader>
-        
+
         {!generatedPlan ? (
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -197,25 +255,30 @@ export default function AiTripGenerator({ onApplyPlan }) {
                   <strong>Duration:</strong> {generatedPlan.days.length} days
                 </p>
                 <p className="text-sm">
-                  <strong>Highlights:</strong> Daily activities including sightseeing, local 
-                  experiences, and cultural immersion
+                  <strong>Highlights:</strong> Daily activities including
+                  sightseeing, local experiences, and cultural immersion
                 </p>
                 <p className="text-sm">
-                  <strong>Accommodation:</strong> {generatedPlan.accommodation.name}
+                  <strong>Accommodation:</strong>{" "}
+                  {generatedPlan.accommodation.name}
                 </p>
               </CardContent>
               <CardFooter>
                 <p className="text-xs text-muted-foreground">
-                  This AI-generated plan is a starting point and can be fully customized.
+                  This AI-generated plan is a starting point and can be fully
+                  customized.
                 </p>
               </CardFooter>
             </Card>
           </div>
         )}
-        
+
         <DialogFooter>
           {!generatedPlan ? (
-            <Button onClick={generateSamplePlan} disabled={isGenerating || !destination}>
+            <Button
+              onClick={generateSamplePlan}
+              disabled={isGenerating || !destination}
+            >
               {isGenerating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -233,13 +296,11 @@ export default function AiTripGenerator({ onApplyPlan }) {
               <Button variant="outline" onClick={() => setGeneratedPlan(null)}>
                 Regenerate
               </Button>
-              <Button onClick={handleApplyPlan}>
-                Apply This Plan
-              </Button>
+              <Button onClick={handleApplyPlan}>Apply This Plan</Button>
             </>
           )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
-} 
+}

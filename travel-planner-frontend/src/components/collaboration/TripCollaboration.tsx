@@ -10,17 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Select,
   SelectContent,
@@ -59,9 +50,9 @@ import {
   Users,
   UserPlus,
   Mail,
-  Link2,
+  Share,
   Copy,
-  Settings,
+  Link2,
   MessageSquare,
   Check,
   Clock,
@@ -69,7 +60,6 @@ import {
   ChevronRight,
   UserMinus,
   Eye,
-  Share2,
   Facebook,
   Twitter,
   Instagram,
@@ -141,7 +131,9 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
   const [comments, setComments] = useState(MOCK_COMMENTS);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("editor");
-  const [shareUrl, setShareUrl] = useState(`https://travel-planner.com/trips/${tripId}`);
+  const [shareUrl, setShareUrl] = useState(
+    `https://travel-planner.com/trips/${tripId}`
+  );
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [commentText, setCommentText] = useState("");
 
@@ -160,20 +152,20 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
 
   const handleInvite = () => {
     if (!inviteEmail) return;
-    
+
     // In a real app, this would send an API request
     const newCollaborator = {
       id: `temp-${Date.now()}`,
-      name: inviteEmail.split('@')[0],
+      name: inviteEmail.split("@")[0],
       email: inviteEmail,
       role: inviteRole,
       status: "pending",
       lastActive: null,
     };
-    
+
     setCollaborators([...collaborators, newCollaborator]);
     setInviteEmail("");
-    
+
     toast({
       title: "Invitation Sent",
       description: `Invited ${inviteEmail} as a ${inviteRole}`,
@@ -189,7 +181,7 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
   };
 
   const handleRemoveCollaborator = (id) => {
-    setCollaborators(collaborators.filter(c => c.id !== id));
+    setCollaborators(collaborators.filter((c) => c.id !== id));
     toast({
       title: "Collaborator Removed",
       description: "The user has been removed from this trip",
@@ -197,9 +189,9 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
   };
 
   const handleRoleChange = (id, newRole) => {
-    setCollaborators(collaborators.map(c => 
-      c.id === id ? { ...c, role: newRole } : c
-    ));
+    setCollaborators(
+      collaborators.map((c) => (c.id === id ? { ...c, role: newRole } : c))
+    );
     toast({
       title: "Role Updated",
       description: `User's permission has been changed to ${newRole}`,
@@ -208,7 +200,7 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
 
   const handleAddComment = (eventId) => {
     if (!commentText.trim()) return;
-    
+
     const newComment = {
       id: `new-${Date.now()}`,
       user: {
@@ -220,10 +212,10 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
       timestamp: new Date(),
       eventId,
     };
-    
+
     setComments([...comments, newComment]);
     setCommentText("");
-    
+
     toast({
       title: "Comment Added",
       description: "Your comment has been added to the event",
@@ -232,9 +224,9 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
 
   const getTimeAgo = (date) => {
     if (!date) return "Never";
-    
+
     const seconds = Math.floor((new Date() - date) / 1000);
-    
+
     if (seconds < 60) return "Just now";
     if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
     if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
@@ -248,7 +240,7 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
       editor: "bg-green-500 hover:bg-green-600",
       viewer: "bg-gray-500 hover:bg-gray-600",
     };
-    
+
     return (
       <Badge className={styles[role]}>
         {role.charAt(0).toUpperCase() + role.slice(1)}
@@ -266,11 +258,11 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
             Collaborators ({collaborators.length})
           </TabsTrigger>
           <TabsTrigger value="sharing">
-            <Share2 className="h-4 w-4 mr-2" />
+            <Share className="h-4 w-4 mr-2" />
             Sharing
           </TabsTrigger>
         </TabsList>
-        
+
         {/* Collaborators Tab */}
         <TabsContent value="collaborators" className="space-y-4">
           <div className="flex justify-between items-center">
@@ -308,26 +300,30 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <Separator />
-                  
+
                   <div className="space-y-2">
                     <h4 className="text-sm font-medium">Permission Levels</h4>
                     <div className="text-sm space-y-2">
                       <div className="flex justify-between">
                         <div className="font-medium">Editor</div>
-                        <div className="text-gray-500">Can edit the itinerary</div>
+                        <div className="text-gray-500">
+                          Can edit the itinerary
+                        </div>
                       </div>
                       <div className="flex justify-between">
                         <div className="font-medium">Viewer</div>
-                        <div className="text-gray-500">Can only view the trip</div>
+                        <div className="text-gray-500">
+                          Can only view the trip
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <DialogFooter className="sm:justify-start">
-                  <Button 
-                    type="button" 
+                  <Button
+                    type="button"
                     variant="default"
                     onClick={handleInvite}
                     disabled={!inviteEmail}
@@ -339,16 +335,21 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
               </DialogContent>
             </Dialog>
           </div>
-          
+
           <Card>
             <CardContent className="p-0">
               <ul className="divide-y">
                 {collaborators.map((user) => (
-                  <li key={user.id} className="flex items-center justify-between p-4">
+                  <li
+                    key={user.id}
+                    className="flex items-center justify-between p-4"
+                  >
                     <div className="flex items-center space-x-3">
                       <Avatar>
                         <AvatarImage src={user.avatar} />
-                        <AvatarFallback>{user.name.substring(0, 2)}</AvatarFallback>
+                        <AvatarFallback>
+                          {user.name.substring(0, 2)}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
                         <div className="font-medium flex items-center">
@@ -359,22 +360,30 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
                             </Badge>
                           )}
                         </div>
-                        <div className="text-sm text-gray-500">{user.email}</div>
+                        <div className="text-sm text-gray-500">
+                          {user.email}
+                        </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <div className="text-xs text-gray-500 flex items-center mr-2">
                         <Clock className="h-3 w-3 mr-1" />
-                        {user.lastActive ? getTimeAgo(user.lastActive) : "Never active"}
+                        {user.lastActive
+                          ? getTimeAgo(user.lastActive)
+                          : "Never active"}
                       </div>
-                      
+
                       {user.role === "owner" ? (
                         renderRoleBadge("owner")
                       ) : (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                            >
                               <span className="sr-only">Open menu</span>
                               <MoreVertical className="h-4 w-4" />
                             </Button>
@@ -382,22 +391,34 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            
-                            <DropdownMenuItem onClick={() => handleRoleChange(user.id, "editor")}>
+
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleRoleChange(user.id, "editor")
+                              }
+                            >
                               <CheckSquare className="h-4 w-4 mr-2" />
                               <span>Make Editor</span>
-                              {user.role === "editor" && <Check className="h-4 w-4 ml-auto" />}
+                              {user.role === "editor" && (
+                                <Check className="h-4 w-4 ml-auto" />
+                              )}
                             </DropdownMenuItem>
-                            
-                            <DropdownMenuItem onClick={() => handleRoleChange(user.id, "viewer")}>
+
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleRoleChange(user.id, "viewer")
+                              }
+                            >
                               <Eye className="h-4 w-4 mr-2" />
                               <span>Make Viewer</span>
-                              {user.role === "viewer" && <Check className="h-4 w-4 ml-auto" />}
+                              {user.role === "viewer" && (
+                                <Check className="h-4 w-4 ml-auto" />
+                              )}
                             </DropdownMenuItem>
-                            
+
                             <DropdownMenuSeparator />
-                            
-                            <DropdownMenuItem 
+
+                            <DropdownMenuItem
                               className="text-red-600"
                               onClick={() => handleRemoveCollaborator(user.id)}
                             >
@@ -414,7 +435,7 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         {/* Sharing Tab */}
         <TabsContent value="sharing" className="space-y-4">
           <Card>
@@ -426,14 +447,18 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
                 <div className="text-sm font-medium">Share Link</div>
                 <div className="flex space-x-2">
                   <Input readOnly value={shareUrl} />
-                  <Button size="icon" variant="outline" onClick={handleCopyLink}>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={handleCopyLink}
+                  >
                     <Copy className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
-              
+
               <Separator />
-              
+
               <div className="space-y-2">
                 <div className="text-sm font-medium">Share on Social Media</div>
                 <div className="flex space-x-2">
@@ -451,9 +476,9 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
                   </Button>
                 </div>
               </div>
-              
+
               <Separator />
-              
+
               <div className="space-y-2">
                 <div className="text-sm font-medium">Privacy Settings</div>
                 <div className="space-y-2">
@@ -463,12 +488,18 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="private">Only me</SelectItem>
-                      <SelectItem value="collaborators">Collaborators only</SelectItem>
-                      <SelectItem value="anyone">Anyone with the link</SelectItem>
-                      <SelectItem value="public">Public (listed in community)</SelectItem>
+                      <SelectItem value="collaborators">
+                        Collaborators only
+                      </SelectItem>
+                      <SelectItem value="anyone">
+                        Anyone with the link
+                      </SelectItem>
+                      <SelectItem value="public">
+                        Public (listed in community)
+                      </SelectItem>
                     </SelectContent>
                   </Select>
-                  
+
                   <Select defaultValue="editors">
                     <SelectTrigger>
                       <SelectValue placeholder="Who can edit this trip" />
@@ -476,7 +507,9 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
                     <SelectContent>
                       <SelectItem value="only_me">Only me</SelectItem>
                       <SelectItem value="editors">Editors only</SelectItem>
-                      <SelectItem value="all_collaborators">All collaborators</SelectItem>
+                      <SelectItem value="all_collaborators">
+                        All collaborators
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -490,7 +523,7 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
           </Card>
         </TabsContent>
       </Tabs>
-      
+
       {/* Comments Sheet - would be triggered when clicking on an event */}
       <Sheet>
         <SheetTrigger asChild>
@@ -506,48 +539,60 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
               Collaborate and discuss about specific events
             </SheetDescription>
           </SheetHeader>
-          
+
           <div className="flex flex-col h-full py-4">
             <ScrollArea className="flex-1 pr-4">
               <div className="space-y-6">
                 <div className="space-y-1">
-                  <h4 className="text-sm font-medium text-muted-foreground">Day 2</h4>
+                  <h4 className="text-sm font-medium text-muted-foreground">
+                    Day 2
+                  </h4>
                   <Card className="bg-muted/50">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Visit Botanical Gardens</CardTitle>
+                      <CardTitle className="text-base">
+                        Visit Botanical Gardens
+                      </CardTitle>
                     </CardHeader>
                     <CardContent className="pb-3">
-                      <div className="text-sm text-muted-foreground">10:00 AM</div>
+                      <div className="text-sm text-muted-foreground">
+                        10:00 AM
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
-                
+
                 <div className="space-y-4">
-                  {comments.filter(c => c.eventId === "e7").map((comment) => (
-                    <div key={comment.id} className="flex space-x-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src={comment.user.avatar} />
-                        <AvatarFallback>{comment.user.name.substring(0, 2)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center">
-                          <div className="font-medium text-sm">{comment.user.name}</div>
-                          <div className="ml-auto text-xs text-muted-foreground">
-                            {getTimeAgo(comment.timestamp)}
+                  {comments
+                    .filter((c) => c.eventId === "e7")
+                    .map((comment) => (
+                      <div key={comment.id} className="flex space-x-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarImage src={comment.user.avatar} />
+                          <AvatarFallback>
+                            {comment.user.name.substring(0, 2)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center">
+                            <div className="font-medium text-sm">
+                              {comment.user.name}
+                            </div>
+                            <div className="ml-auto text-xs text-muted-foreground">
+                              {getTimeAgo(comment.timestamp)}
+                            </div>
                           </div>
+                          <div className="mt-1 text-sm">{comment.text}</div>
                         </div>
-                        <div className="mt-1 text-sm">{comment.text}</div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </ScrollArea>
-            
+
             <div className="border-t pt-4 mt-4">
               <div className="flex space-x-2">
-                <Input 
-                  placeholder="Add a comment..." 
+                <Input
+                  placeholder="Add a comment..."
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                 />
@@ -561,4 +606,4 @@ export default function TripCollaboration({ tripId, tripName, onUpdate }) {
       </Sheet>
     </div>
   );
-} 
+}
