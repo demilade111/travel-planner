@@ -2,7 +2,11 @@
 
 A comprehensive travel planning application that helps you organize trips, track expenses, create packing lists, and collaborate with friends and family.
 
-![Travel Planner](https://example.com/travel-planner-screenshot.png)
+
+
+## Live Demo
+
+Check out the live demo: [Travel Planner](https://travel-planner-new-demi.vercel.app/)
 
 ## Features
 
@@ -149,55 +153,4 @@ Authorization: Bearer YOUR_JWT_TOKEN
 #### Collaboration
 
 - `POST /api/collaboration/trip/:tripId/collaborator` - Add collaborator
-- `DELETE /api/collaboration/trip/:tripId/collaborator/:userId` - Remove collaborator
-- `PUT /api/collaboration/trip/:tripId/collaborator/:userId` - Update collaborator role
-- `GET /api/collaboration/trip/:tripId/collaborators` - Get collaborators
-- `DELETE /api/collaboration/trip/:tripId/leave` - Leave trip
-
-## Project Structure
-
-```
-Travel-planner/
-├── travel-planner-backend/       # Backend code
-│   ├── src/
-│   │   ├── api/                  # API endpoints
-│   │   │   ├── controllers/      # Route controllers
-│   │   │   └── routes/           # Express routes
-│   │   ├── config/               # Configuration
-│   │   ├── middlewares/          # Express middlewares
-│   │   ├── models/               # Mongoose models
-│   │   └── utils/                # Utility functions
-│   ├── .env                      # Environment variables
-│   ├── package.json              # Backend dependencies
-│   └── server.js                 # Entry point
-│
-└── travel-planner-frontend/      # Frontend code
-    ├── src/
-    │   ├── assets/               # Static assets
-    │   ├── components/           # React components
-    │   ├── pages/                # Page components
-    │   ├── lib/                  # Utility functions
-    │   └── styles/               # CSS styles
-    ├── package.json              # Frontend dependencies
-    └── index.html                # HTML entry point
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgements
-
-- [React](https://reactjs.org/)
-- [Express](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Mongoose](https://mongoosejs.com/)
+- `
