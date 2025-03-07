@@ -2,6 +2,7 @@
 
 A comprehensive travel planning application that helps you organize trips, track expenses, create packing lists, and collaborate with friends and family.
 
+<img width="1404" alt="Screenshot 2025-03-06 at 11 53 07 PM" src="https://github.com/user-attachments/assets/1be14346-fac2-4859-a2eb-99ea80f8adcc" />
 
 
 ## Live Demo
