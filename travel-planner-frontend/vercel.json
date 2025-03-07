@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "buildCommand": "cd travel-planner-frontend && npm install && npm run build",
+  "outputDirectory": "travel-planner-frontend/dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
